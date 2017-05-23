@@ -5,5 +5,6 @@ Silahkan digunakan dengan bebas, namun tidak ada jaminan paket yang dihasilkan d
 
 Selamat mencoba dan semoga bermanfaat.
 
-Situs web : https://idnux09@gmail.com
+Situs web : https://idnux.wordpress.com
+
 Kontak : idnux09@gmail.com atau t.me/idnux
