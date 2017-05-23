@@ -1,0 +1,8 @@
+Configuring lightdm-gtk-greeter
+================================
+
+The lightdm-gtk-greeter configuration file is "/etc/lightdm/
+lightdm-gtk-greeter.conf". In that file, you can
+define the graphical theme to be used among other things.
+
+

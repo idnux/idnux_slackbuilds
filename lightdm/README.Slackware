@@ -1,0 +1,26 @@
+Configuring lightdm
+===================
+
+The Lightdm configuration file is "/etc/lightdm/lightdm.conf". In that file, you can
+define the graphical theme to be used among other things.
+
+
+Adding Lightdm as graphical display manager for runlevel 4
+=======================================================
+
+If you installed Lightdm and want this graphical display manager to be used in
+runlevel 4 instead of Slackware's own KDM, XDM or even Gnome's GDM, then
+you need to add the following lines to the file '/etc/rc.d/rc.4' directly
+below the line that says:
+echo "Starting up X11 session manager..."
+
+# ----8<----------------------------------------------------------------
+
+# Use lightdm (A Lightweight Desktop Manager)
+if [ -x /usr/bin/lightdm ]; then
+  exec /usr/bin/lightdm
+fi
+
+# ----8<----------------------------------------------------------------
+
+

@@ -1,0 +1,12 @@
+Using light-locker
+================================
+
+Light Locker should now be used when locking the screen from the session menu or when resuming from suspend, but the lock screen keyboard shortcut won't work. This can be fixed by setting a custom keyboard shortcut for "light-locker-command -l" (this is the command used to lock the screen) or by following the instructions below. 
+
+For GNOME Shell, run the following command:
+ln -s /usr/bin/light-locker-command /usr/bin/gnome-screensaver-command
+
+For Xfce, copy/paste the following command:
+sed -i '/xscreensaver-command/a \    "light-locker-command -l" \\' /usr/bin/xflock4
+
+
