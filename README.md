@@ -7,4 +7,4 @@ Selamat mencoba dan semoga bermanfaat.
 
 Situs web : https://idnux.wordpress.com
 
-Kontak : idnux09@gmail.com atau t.me/idnux
+Kontak : idnux09@gmail.com atau https://t.me/idnux
