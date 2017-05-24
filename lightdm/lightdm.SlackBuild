@@ -84,7 +84,7 @@ find -L . \
 # If we get here and don't have a lightdm user/group, add one.
 # Otherwise a few directories in the package will have wrong permissions.
 if ! grep -q "^lightdm:" /etc/passwd ; then
-  groupadd -fg 602 lightdm
+  groupadd -fg 620 lightdm
   useradd -c "Light Display Manager" -d /var/lib/lightdm -u 620 -g lightdm -s /sbin/nologin lightdm
 fi
 
