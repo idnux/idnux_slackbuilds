@@ -1,0 +1,5 @@
+KBBI Qt adalah aplikasi Kamus Besar Bahasa Indonesia berbasis
+Graphical User Interface (GUI) yang dikembangkan menggunakan
+bahasa pemrograman C++ dan Framework Qt. 
+
+Optional dependencies: qt5
