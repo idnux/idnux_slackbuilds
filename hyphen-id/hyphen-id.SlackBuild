@@ -66,14 +66,6 @@ find -L . \
 install -dm755 $PKG/usr/share/hyphen
 install -m644 hyph_id_ID.dic $PKG/usr/share/hyphen
 
-# myspell symlinks
-install -dm755 $PKG/usr/share/myspell/dicts
-pushd $PKG/usr/share/myspell/dicts
-  for file in $PKG/usr/share/hyphen/*; do
-    ln -sv ../../hyphen/$(basename $file) .
-  done
-popd
-
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/README > $PKG/usr/doc/$PRGNAM-$VERSION/README
 cat info/long-description.txt > $PKG/usr/doc/$PRGNAM-$VERSION/README-id_ID
@@ -86,4 +78,4 @@ cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
 
 echo "Cleaning up build directory"
-cd $WRK; rm -rf $SRCNAM-$VERSION $PKG
+cd $WRK; rm -rf $PRGNAM-$VERSION $PKG
