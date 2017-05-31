@@ -66,13 +66,6 @@ find -L . \
 install -dm755 $PKG/usr/share/mythes
 install -m644 th_id_ID_v2.* $PKG/usr/share/mythes
 
-# myspell symlinks
-install -dm755 $PKG/usr/share/myspell/dicts
-pushd $PKG/usr/share/myspell/dicts
-  for file in $PKG/usr/share/mythes/*; do
-    ln -sv ../../mythes/$(basename $file) .
-  done
-popd
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 install -m644 README* $PKG/usr/doc/$PRGNAM-$VERSION
@@ -82,7 +75,7 @@ mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 
 cd $PKG
-/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
+/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
 
 echo "Cleaning up build directory"
-cd $WRK; rm -rf $SRCNAM-$VERSION $PKG
+cd $WRK; rm -rf $PRGNAM-$VERSION $PKG
