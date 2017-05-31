@@ -1,6 +1,6 @@
 #!/bin/sh
  
-# Copyright 2017  Ali Ahmadi, alienux09@gmail.com
+# Copyright 2017  Ali Ahmadi, idnux09@gmail.com
 # All rights reserved.
 #
 #
@@ -21,8 +21,7 @@
 #  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-SRCNAM=lightdm-gtk-greeter
-PRGNAM=lightdm-gtk-greeter
+PRGNAM=lightdm
 VERSION=$(cat $PRGNAM.info | grep "VERSION" | cut -d = -f 2 | sed 's/"//g')
 BUILD=${BUILD:-1}
 TAG=${TAG:-_idnux}
@@ -68,9 +67,11 @@ fi
 rm -rf $PKG
 mkdir -p $WRK $PKG $OUTPUT
 cd $WRK
-rm -rf $SRCNAM-$VERSION
-tar xvf $CWD/$SRCNAM-$VERSION.tar.?z*
-cd $SRCNAM-$VERSION
+rm -rf $PRGNAM-$VERSION
+tar xvf $CWD/$PRGNAM-$VERSION.tar.?z*
+cd $PRGNAM-$VERSION
+
+cat $CWD/lightdm-default-config.patch | patch -p1 || exit 1
 
 chown -R root:root .
 find -L . \
@@ -78,6 +79,13 @@ find -L . \
   -o -perm 511 \) -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
   -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
+
+# If we get here and don't have a lightdm user/group, add one.
+# Otherwise a few directories in the package will have wrong permissions.
+if ! grep -q "^lightdm:" /etc/passwd ; then
+  groupadd -fg 620 lightdm
+  useradd -c "Light Display Manager" -d /var/lib/lightdm -u 620 -g lightdm -s /sbin/nologin lightdm
+fi
 
 
 CFLAGS="$SLKCFLAGS" \
@@ -87,33 +95,67 @@ CXXFLAGS="$SLKCFLAGS" \
   --libexecdir=/usr/lib/lightdm \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
   --sysconfdir=/etc \
+  --datarootdir=/usr/share \
+  --localstatedir=/var \
   --sbindir=/usr/bin \
+  --mandir=/usr/man \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
-  --with-libxkvalier \
-  --enable-kill-on-sigterm \
-  --disable-libido \
-  --disable-libindicator \
+  --with-greeter-user=lightdm \
+  --with-greeter-session=lightdm-gtk-greeter \
+  --disable-liblightdm-qt \
+  --disable-liblightdm-qt5 \
   --disable-static \
+  --disable-test \
   --build=$ARCH-slackware-linux
 
 make $NUMJOBS
 make install DESTDIR=$PKG
 
+cat $CWD/Xsession > $PKG/etc/lightdm/Xsession
+chmod +x $PKG/etc/lightdm/Xsession
+rm -rf $PKG/etc/init
+
+mkdir -p -m=755 $PKG/var/cache/lightdm
+mkdir -p -m=770 $PKG/var/lib/lightdm{,-data}
+mkdir -p -m=711 $PKG/var/log/lightdm
+chmod +t $PKG/var/{cache/lightdm,lib/lightdm{,-data}}
+chown lightdm:lightdm -R $PKG/var/lib/lightdm{,-data}
+chgrp lightdm $PKG/var/log/lightdm
+
+# apparmor package. Bug #494426
+ if [[ -d $PKG/etc/apparmor.d ]]; then
+   rm -r "$PKG/etc/apparmor.d" || die \
+			"Failed to remove apparmor profiles"
+ fi
+
+
+# PAM
+cat $CWD/lightdm.pam > $PKG/etc/pam.d/lightdm
+cat $CWD/lightdm-autologin.pam > $PKG/etc/pam.d/lightdm-autologin
+
+# PolicyKit
+mkdir -p -m750 $PKG/usr/share/polkit-1/rules.d
+chgrp polkitd $PKG/usr/share/polkit-1/rules.d
+cat $CWD/lightdm.rules > $PKG/usr/share/polkit-1/rules.d/lightdm.rules
+
 
 find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
+find $PKG/usr/man -type f -exec gzip -9 {} \;
+for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a AUTHORS COPYING* INSTALL NEWS $PKG/usr/doc/$PRGNAM-$VERSION
-cat $CWD/README.Slackware > $PKG/usr/doc/$PRGNAM-$VERSION/README-1
+cp -a COPYING* NEWS TODO $PKG/usr/doc/$PRGNAM-$VERSION
+cat $CWD/README.Slackware > $PKG/usr/doc/$PRGNAM-$VERSION/README
 
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/doinst.sh > $PKG/install/doinst.sh
 
 cd $PKG
 /sbin/makepkg -p -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.txz
 
 echo "Cleaning up build directory"
-cd $WRK; rm -rf $SRCNAM-$VERSION $PKG
+cd $WRK; rm -rf $PRGNAM-$VERSION $PKG
