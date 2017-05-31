@@ -66,13 +66,6 @@ find -L . \
 install -dm755 $PKG/usr/share/hunspell
 install -m644 id_ID.* $PKG/usr/share/hunspell
 
-# myspell symlinks
-install -dm755 $PKG/usr/share/myspell/dicts
-pushd $PKG/usr/share/myspell/dicts
-  for file in $PKG/usr/share/hunspell/*; do
-    ln -sv ../../hunspell/$(basename $file) .
-  done
-popd
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/README > $PKG/usr/doc/$PRGNAM-$VERSION/README
