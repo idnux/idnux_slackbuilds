@@ -108,14 +108,14 @@ find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | gr
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a AUTHORS COPYING* HACKING INSTALL NEWS README $PKG/usr/doc/$PRGNAM-$VERSION
-cat $CWD/README.Slackware > $PKG/usr/doc/$PRGNAM-$VERSION/README-1
+cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 
 cd $PKG
-/sbin/makepkg -p -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.txz
+/sbin/makepkg -p -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
 
 echo "Cleaning up build directory"
 cd $WRK; rm -rf $PRGNAM-$VERSION $PKG
