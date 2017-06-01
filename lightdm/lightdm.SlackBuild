@@ -1,6 +1,6 @@
 #!/bin/sh
  
-# Copyright 2017  Ali Ahmadi, idnux09@gmail.com
+# Copyright 2017  Ali Ahmadi, <idnux09@gmail.com>
 # All rights reserved.
 #
 #
@@ -147,7 +147,7 @@ for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; r
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a COPYING* NEWS TODO $PKG/usr/doc/$PRGNAM-$VERSION
-cat $CWD/README.Slackware > $PKG/usr/doc/$PRGNAM-$VERSION/README
+cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 
 mkdir -p $PKG/install
@@ -155,7 +155,7 @@ cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/doinst.sh > $PKG/install/doinst.sh
 
 cd $PKG
-/sbin/makepkg -p -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.txz
+/sbin/makepkg -p -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
 
 echo "Cleaning up build directory"
 cd $WRK; rm -rf $PRGNAM-$VERSION $PKG
