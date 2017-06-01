@@ -68,7 +68,7 @@ install -m644 th_id_ID_v2.* $PKG/usr/share/mythes
 
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-install -m644 README* $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a README* $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install
