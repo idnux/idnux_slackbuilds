@@ -1,0 +1,9 @@
+Linux-PAM (Pluggable Authentication Modules for Linux) is a suite of shared
+libraries that enable the local system administrator to choose how
+applications authenticate users.
+
+In other words, without (rewriting and) recompiling a PAM-aware
+application, it is possible to switch between the authentication mechanisms)
+it uses. Indeed, one may entirely upgrade the local authentication system
+without touching the applications themselves.
+
