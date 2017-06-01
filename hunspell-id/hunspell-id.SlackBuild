@@ -68,15 +68,14 @@ install -m644 id_ID.* $PKG/usr/share/hunspell
 
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cat $CWD/README > $PKG/usr/doc/$PRGNAM-$VERSION/README
-cat info/long-description.txt > $PKG/usr/doc/$PRGNAM-$VERSION/README-id_ID
+cat info/long-description.txt > $PKG/usr/doc/$PRGNAM-$VERSION/README
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 
 cd $PKG
-/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
+/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
 
 echo "Cleaning up build directory"
 cd $WRK; rm -rf $PRGNAM-$VERSION $PKG
