@@ -24,10 +24,11 @@
 
 PRGNAM=python3
 SRCNAM=Python
-VERSION=${VERSION:-3.6.1}
+VERSION=$(cat $PRGNAM.info | grep "VERSION" | cut -d = -f 2 | sed 's/"//g')
 BRANCH_VERSION=$(echo $VERSION | cut -f 1,2 -d . )
 BUILD=${BUILD:-1}
 TAG=${TAG:-_idnux}
+NUMJOBS=${NUMJOBS:--j7}
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
@@ -111,7 +112,7 @@ find -L . \
   --with-system-ffi \
   --build=$ARCH-slackware-linux
 
-make
+make $NUMJOBS
 make install DESTDIR=$PKG
 
 # Restore original ensurepip behaviour.
