@@ -23,7 +23,7 @@
 
 PRGNAM=lightdm-gtk-greeter
 VERSION=$(cat $PRGNAM.info | grep "VERSION" | cut -d = -f 2 | sed 's/"//g')
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-1}
 TAG=${TAG:-_idnux}
 NUMJOBS=${NUMJOBS:--j7}
 
@@ -82,9 +82,6 @@ find -L . \
  -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
-
-# Patch to add back power indicator:
-cat ${CWD}/01_add_back_power_indicator.patch | patch -p1 --verbose || exit 1
 
 # Configure:
 CFLAGS="$SLKCFLAGS" \
