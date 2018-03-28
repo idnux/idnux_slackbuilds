@@ -168,7 +168,7 @@ fi
 # present, but listing them ensures that documentation that might appear and
 # disappear from version to version will not be missed.
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a COPYING* NEWS TODO $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a COPYING* NEWS $PKG/usr/doc/$PRGNAM-$VERSION
 
 # If there's a ChangeLog, installing at least part of the recent history
 # is useful, but don't let it get totally out of control:
