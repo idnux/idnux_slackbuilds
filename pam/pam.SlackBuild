@@ -27,7 +27,7 @@
 _PRGNAM=Linux-PAM
 PRGNAM=pam
 VERSION=$(cat $PRGNAM.info | grep "VERSION" | cut -d = -f 2 | sed 's/"//g')
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 TAG=${TAG:-_idnux}
 NUMJOBS=${NUMJOBS:--j7}
 
@@ -76,10 +76,10 @@ set -e
 
 rm -rf $PKG
 mkdir -p $WRK $PKG $OUTPUT
-cd $WRK  || exit 1
+cd $WRK
 rm -rf $_PRGNAM-$VERSION
-tar xvf $CWD/$_PRGNAM-$VERSION.tar.?z*  || exit 1
-cd $_PRGNAM-$VERSION  || exit 1
+tar xvf $CWD/$_PRGNAM-$VERSION.tar.?z*
+cd $_PRGNAM-$VERSION
 
 chown -R root:root .
 find -L . \
@@ -118,6 +118,9 @@ mkdir -p $PKG/etc/pam.d
 cp $CWD/pam.d/* $PKG/etc/pam.d/
 chown -R root:root $PKG/etc/pam.d
 chmod 644 $PKG/etc/pam.d/*
+
+# Don't ship .la files:
+rm -f $PKG/{,usr/}lib${LIBDIRSUFFIX}/*.la
 
 # Strip binaries:
 find $PKG | xargs file | grep -e "executable" -e "shared object" \
