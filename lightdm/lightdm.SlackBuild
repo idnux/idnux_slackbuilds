@@ -23,7 +23,7 @@
 
 PRGNAM=lightdm
 VERSION=$(cat $PRGNAM.info | grep "VERSION" | cut -d = -f 2 | sed 's/"//g')
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 TAG=${TAG:-_idnux}
 NUMJOBS=${NUMJOBS:--j7}
 
@@ -72,12 +72,12 @@ set -e
 
 rm -rf $PKG
 mkdir -p $WRK $PKG $OUTPUT
-cd $WRK  || exit 1
+cd $WRK
 rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$PRGNAM-$VERSION.tar.?z*  || exit 1
-cd $PRGNAM-$VERSION  || exit 1
+tar xvf $CWD/$PRGNAM-$VERSION.tar.?z*
+cd $PRGNAM-$VERSION
 
-cat $CWD/lightdm-default-config.patch | patch -p1 || exit 1
+cat $CWD/lightdm-default-config.patch | patch -p1
 
 chown -R root:root .
 find -L . \
@@ -112,11 +112,11 @@ CXXFLAGS="$SLKCFLAGS" \
   --disable-liblightdm-qt5 \
   --disable-static \
   --disable-test \
-  --build=$ARCH-slackware-linux || exit 1
+  --build=$ARCH-slackware-linux
 
 # Build and install:
-make $NUMJOBS || make || exit 1
-make install DESTDIR=$PKG || exit 1
+make $NUMJOBS || make
+make install DESTDIR=$PKG
 
 cat $CWD/Xsession > $PKG/etc/lightdm/Xsession
 chmod +x $PKG/etc/lightdm/Xsession
@@ -135,7 +135,6 @@ chgrp lightdm $PKG/var/log/lightdm
 			"Failed to remove apparmor profiles"
  fi
 
-
 # PAM
 cat $CWD/lightdm.pam > $PKG/etc/pam.d/lightdm
 cat $CWD/lightdm-autologin.pam > $PKG/etc/pam.d/lightdm-autologin
@@ -144,6 +143,9 @@ cat $CWD/lightdm-autologin.pam > $PKG/etc/pam.d/lightdm-autologin
 mkdir -p -m750 $PKG/usr/share/polkit-1/rules.d
 chgrp polkitd $PKG/usr/share/polkit-1/rules.d
 cat $CWD/lightdm.rules > $PKG/usr/share/polkit-1/rules.d/lightdm.rules
+
+# Don't ship .la files:
+rm -f $PKG/{,usr/}lib${LIBDIRSUFFIX}/*.la
 
 # Strip binaries:
 find $PKG | xargs file | grep -e "executable" -e "shared object" \
