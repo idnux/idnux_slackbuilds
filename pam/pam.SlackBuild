@@ -27,7 +27,7 @@
 _PRGNAM=Linux-PAM
 PRGNAM=pam
 VERSION=$(cat $PRGNAM.info | grep "VERSION" | cut -d = -f 2 | sed 's/"//g')
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-1}
 TAG=${TAG:-_idnux}
 NUMJOBS=${NUMJOBS:--j7}
 
