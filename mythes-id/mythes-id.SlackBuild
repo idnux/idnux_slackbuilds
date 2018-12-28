@@ -87,7 +87,7 @@ find -L . \
 # Build and install:
 make
 make install DESTDIR=$PKG
-rm -rf $PKG/usr/share/myspell
+rm -rf $PKG/usr/share/myspell $PKG/usr/share/doc
 
 # Compress and if needed symlink the man pages:
 if [ -d $PKG/usr/man ]; then
